@@ -1,0 +1,10 @@
+#+TITLE: Browser Info ChangeLog
+
+* [1.0.0] - 2025-08-31
+
+- First public release
+- Changes and improvements to the documenation for public release
+
+* [0.1.0] - 2022-11-23
+
+- Initial release (private)

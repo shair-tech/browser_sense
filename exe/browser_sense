@@ -1,0 +1,92 @@
+#!/usr/bin/env ruby
+
+# -*- ruby -*-
+# A quick hack to analyze data produced by browser info
+
+require "tempfile"
+
+if ARGV.length != 1
+  puts "Usage browser_sense log_filename"
+  exit
+end
+
+LOG_FILE=ARGV[0]
+TMP_FILE= Tempfile.new("browser_sense").path
+
+def title(string)
+  puts %Q(
+==============================================================================
+#{string}
+==============================================================================)
+end
+
+# Look for BrowserSense | cut info by Rails | remove lines with less than 7 fields
+# No need to remove double quotes with sed -e 's/\"//g'
+`grep -E -e 'Browser(Info|Sense)' #{LOG_FILE} | sed -E 's/.*Browser(Info|Sense): (.+,.+,.+,.+,.+,.+,.+,.+)/\\2/g' > #{TMP_FILE}`
+
+# Look at the README file of BrowserSense for the field specification
+#
+# mlr template
+#
+# 1. Browser name
+# 2. Platform
+# 3. Device name  
+# 4. Controller being invoked
+# 5. Method of the controller being invoked
+# 6. Request format (e.g. html, json)
+# 7. Hashed IP, which allows to track requests from the same IP, while preserving privacy
+# 8. Timestamp
+#
+
+# methods by os
+# the usage of reshape and unsparsify is still kind of magic to me.
+# https://unix.stackexchange.com/questions/557124/bash-awk-pivot-csv-into-desired-table
+title "Methods vs OS"
+
+puts `mlr --icsv --implicit-csv-header --opprint put 'if ($2 == "android" || $2 == "ios") { $os_type="mobile"} elif ($2 == "unknown_platform") {$os_type = "unknown" } else {$os_type = "desktop"}' then cut -f 4,5,os_type then label controller,method,os_type then count-distinct -f controller,method,os_type then reshape -s os_type,count then unsparsify then sort -f controller,method #{TMP_FILE}`
+
+# how many browser types?
+title "Browsers"
+
+puts `mlr --icsv --implicit-csv-header --opprint count-distinct -f 1 then label browser,count then sort -nr count #{TMP_FILE}`
+
+
+# how many os?
+title "OS"
+
+puts `mlr --icsv --implicit-csv-header --opprint count-distinct -f 2 then label os,count then sort -nr count #{TMP_FILE}`
+
+# how many os,browser?
+title "OS and Browsers"
+
+puts `mlr --icsv --implicit-csv-header --opprint count-distinct -f 2,1 then label os,browser,count then sort -nr count #{TMP_FILE}`
+
+# how many distinct ips?
+title "IP"
+
+puts `mlr --icsv --implicit-csv-header --opprint count-distinct -f 7 then label ip,count then sort -nr count #{TMP_FILE}`
+
+# ip,os,browser?
+title "IP,OS,Browser"
+
+puts `mlr --icsv --implicit-csv-header --opprint count-distinct -f 7,2,1 then label ip,platform,browser,count then sort -nr count #{TMP_FILE}`
+
+# methods used on mobile
+title "Methods on Mobile"
+
+puts `mlr --icsv --implicit-csv-header --opprint filter '$2 == "android" || $2 == "ios"' then count-distinct -f 2,1,4,5 then label os,browser,controller,method,count then sort -f os,browser,controller,method then put '$count2=$count' then bar -f count2 -b ' '  #{TMP_FILE}`
+
+# methods used on desktops
+title "Methods on PC"
+
+puts `mlr --icsv --implicit-csv-header --opprint filter '$2 != "android" && $2 != "ios"' then count-distinct -f 2,1,4,5 then label os,browser,controller,method,count then sort -f os,browser,controller,method,count then sort -nr count #{TMP_FILE}`
+
+# methods used
+title "Methods"
+
+puts `mlr --icsv --implicit-csv-header --opprint count-distinct -f 4,5 then label controller,method then sort -nr count #{TMP_FILE}`
+
+# methods vs format
+title "Methods"
+
+puts `mlr --icsv --implicit-csv-header --opprint count-distinct -f 4,5,6 then label controller,method,format then sort -nr count #{TMP_FILE}`
