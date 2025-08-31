@@ -10,31 +10,11 @@ Gem::Specification.new do |spec|
 
   spec.summary = "Monitor which browser is accessing your Ruby on Rails app."
   spec.description = <<-EOS
-     BrowserSense logs information about the browser accessing your
-     RubyOnRails app.  
+     BrowserSense logs information about the browsers accessing your
+     RubyOnRails app.
 
-     Installation is pretty simple:
-
-     1. Add =gem "browser_sense"= to your Gemfile
-
-     2. Add the following line to your =application_controller.rb=:
-
-        browser_sense
-
-     Data is stored in csv format in Rails' production log.  Each URL invocation
-     generates a log line.
-
-     Extract browser info data with:
-
-        grep BrowserSense development.log | cut -f2- -d:
-
-     Analyize with
-
-        browser-info log/production.log > output.txt
-
-     or with log_sense (https://rubygems.org/gems/log_sense)
-
-     BrowserSense relies on the browser gem to get informaton about the browsers.
+     Data can be easily extracted from the log, analyzed
+     with the included script or with log_sense.
   EOS
   spec.homepage = "https://github.com/shair-tech/browser_sense"
   spec.license = "MIT"
