@@ -18,13 +18,14 @@ Add the gem to your application's Gemfile and then bundle:
    bundle
 #+end_example
 
-To enable logging, add =browser_infro= to the =application_controller.rb= of
-your app, e.g.:
+To enable logging, add =browser_sense= to the =application_controller.rb= of
+your app, i.e.:
 
 #+begin_src ruby
   class ApplicationController < ActionController::Base
     [...]
 
+    include BrowserSenseFilter
     browser_sense
 
     [...]

@@ -10,11 +10,9 @@ Gem::Specification.new do |spec|
 
   spec.summary = "Monitor which browser is accessing your Ruby on Rails app."
   spec.description = <<-EOS
-     BrowserSense logs information about the browsers accessing your
-     RubyOnRails app.
+     BrowserSense logs information about the browsers accessing your RubyOnRails app.
 
-     Data can be easily extracted from the log, analyzed
-     with the included script or with log_sense.
+     Data can be easily extracted from the log, analyzed with the included script or with the log_sense gem.
   EOS
   spec.homepage = "https://github.com/shair-tech/browser_sense"
   spec.license = "MIT"

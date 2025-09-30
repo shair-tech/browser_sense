@@ -1,10 +1,14 @@
-#+TITLE: Browser Info ChangeLog
+#+TITLE: BrowserSense ChangeLog
 
-* [1.0.0] - 2025-08-31
+* [1.0.1] - <2025-09-30 Tue>
+
+- Fixes documentation
+
+* [1.0.0] - <2025-08-31 Sun>
 
 - First public release
 - Changes and improvements to the documenation for public release
 
-* [0.1.0] - 2022-11-23
+* [0.1.0] - <2022-11-23 Wed>
 
 - Initial release (private)
