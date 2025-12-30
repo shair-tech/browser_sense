@@ -10,9 +10,10 @@ Gem::Specification.new do |spec|
 
   spec.summary = "Monitor which browser is accessing your Ruby on Rails app."
   spec.description = <<-EOS
-     BrowserSense logs information about the browsers accessing your RubyOnRails app.
+     BrowserSense logs information about the browsers using your RubyOnRails app.
 
-     Data can be easily extracted from the log, analyzed with the included script or with the log_sense gem.
+     Data can be easily extracted from the log, analyzed with the included
+     script or with the log_sense gem.
   EOS
   spec.homepage = "https://github.com/shair-tech/browser_sense"
   spec.license = "MIT"
@@ -36,8 +37,10 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # Uncomment to register a new dependency of your gem
+  # We just log. All the recognition work is done by browser
   spec.add_dependency "browser", "~> 6.2.0"
+  # To properly quote log lines
+  spec.add_dependency "csv"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html

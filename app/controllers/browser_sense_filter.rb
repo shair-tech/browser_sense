@@ -1,5 +1,6 @@
 require "active_support/concern"
 require "browser"
+require "csv"
 
 module BrowserSenseFilter
   extend ActiveSupport::Concern
@@ -18,15 +19,27 @@ module BrowserSenseFilter
         now = DateTime.now
 
         logger = Rails.logger
+
         browser_data = [
-          b.name, b.platform, b.device.name,
-          controller.class.name, controller.action_name,
+          b.name,
+          b.platform,
+          b.device.name,
+          controller.class.name,
+          controller.action_name,
           request.format.symbol,
           hashed_ip,
-          now
+          now,
+          # added in v 1.1.10
+          ip,
+          b.version,
+          b.platform.version,
+          browser.bot?,
+          browser.bot&.search_engine?,
+          browser.bot&.name
         ]
 
-        browser_data_str = browser_data.map { |x| "\"#{x}\"" }.join(",")
+        CSV(browser_data_str = "")   { |csv_str| csv_str << browser_data }
+
         logger.info "BrowserSense: #{browser_data_str}"
       end
     end

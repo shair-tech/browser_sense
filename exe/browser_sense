@@ -22,7 +22,7 @@ end
 
 # Look for BrowserSense | cut info by Rails | remove lines with less than 7 fields
 # No need to remove double quotes with sed -e 's/\"//g'
-`grep -E -e 'Browser(Info|Sense)' #{LOG_FILE} | sed -E 's/.*Browser(Info|Sense): (.+,.+,.+,.+,.+,.+,.+,.+)/\\2/g' > #{TMP_FILE}`
+`grep -E -e 'Browser(Info|Sense)' #{LOG_FILE} | sed -E 's/.*Browser(Info|Sense): (.+,.+,.+,.+,.+,.+,.+,.+,(.+,.+,.+,.+,.+,.+)?)/\\2/g' > #{TMP_FILE}`
 
 # Look at the README file of BrowserSense for the field specification
 #
@@ -36,6 +36,15 @@ end
 # 6. Request format (e.g. html, json)
 # 7. Hashed IP, which allows to track requests from the same IP, while preserving privacy
 # 8. Timestamp
+#
+# Added in 1.10 (and made optional in the regexp above
+#
+#  9, ip
+# 10. b.version
+# 11. b.platform.version
+# 12. browser.bot?
+# 13. browser.bot&.search_engine?
+# 13. browser.bot&.name
 #
 
 # methods by os
