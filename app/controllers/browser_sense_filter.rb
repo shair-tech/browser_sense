@@ -40,7 +40,7 @@ module BrowserSenseFilter
 
         CSV(browser_data_str = "")   { |csv_str| csv_str << browser_data }
 
-        logger.info "BrowserSense: #{browser_data_str}"
+        logger.info "BrowserSense: #{browser_data_str[0..-2]}"
       end
     end
   end
