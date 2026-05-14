@@ -1,5 +1,9 @@
 #+TITLE: BrowserSense ChangeLog
 
+* [1.1.2] - <2026-05-14 Thu>
+
+- Fixes a bug
+
 * [1.1.1] - <2026-01-10 Sat>
 
 - Remove useless newline in log line (introduced by CSV)

@@ -33,9 +33,9 @@ module BrowserSenseFilter
           ip,
           b.version,
           b.platform.version,
-          browser.bot?,
-          browser.bot&.search_engine?,
-          browser.bot&.name
+          b.bot?,
+          b.bot&.search_engine?,
+          b.bot&.name
         ]
 
         CSV(browser_data_str = "")   { |csv_str| csv_str << browser_data }
